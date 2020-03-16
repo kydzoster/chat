@@ -9,16 +9,33 @@
 <body>
     <h1>Welcome, {{ username }}</h1>
 
+<!--Texbox and a button-->
+    <form method="POST">
+        <textarea name="message" id="message" cols="50" rows="4"></textarea>
+        <br>
+        <button>Send message!</button>
+    </form>
+
+<!--Message order time, from whom and a message-->
     {% for message in chat_messages %}
     <p>({{ message.timestamp }}) <span><b>{{ message.from }}:</b></span> {{ message.message }}</p>
     {% endfor %}
 
-    
-<!--Javascript function to refresh page every 5 sec. so messages could be load as they are posted-->
+
+<!--Javascript function to refresh page every 5 sec. so messages could be load as they are posted, except textbox-->
     <script>
+        let textbox = document.getElementById("message")
+
         let timer = setTimeout(function(){
             location.reload();
         }, 5000)
+
+        textbox.onkeydown = function(e){
+            clearTimeout(timer)
+            timer = setTimeout(function(){
+                location.reload();
+            }, 30000)
+        }
     </script>
 </body>
 </html>
