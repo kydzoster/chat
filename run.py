@@ -1,16 +1,17 @@
 import os
 from datetime import datetime
-from flask import Flask, redirect, render_template
+from flask import Flask, redirect, render_template, request, session
 
 
 app = Flask(__name__)
+app.secret_key = "randomstring123"
 messages = []
 
 
 def add_messages(username, message):
     """Add messages to the messages list with time stamp"""
     now = datetime.now().strftime("%H:%M:%S")
-    messages.append("({}){}: {}".format(now, username, message))
+    messages.append("({}) {}: {}".format(now, username, message))
 
 
 def get_all_messages():
@@ -18,9 +19,17 @@ def get_all_messages():
     return "<br>".join(messages)
 
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def index():
     """Main page with instructions"""
+
+    if request.method == "POST":
+        session["username"] = request.form["username"]
+
+    if "username" in session:
+        return redirect(session["username"])
+
+
     return render_template("index.html")
 
 
