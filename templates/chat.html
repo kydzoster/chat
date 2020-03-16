@@ -8,6 +8,17 @@
 </head>
 <body>
     <h1>Welcome, {{ username }}</h1>
-    {{ chat_messages }}
+
+    {% for message in chat_messages %}
+    <p>({{ message.timestamp }}) <span><b>{{ message.from }}:</b></span> {{ message.message }}</p>
+    {% endfor %}
+
+    
+<!--Javascript function to refresh page every 5 sec. so messages could be load as they are posted-->
+    <script>
+        let timer = setTimeout(function(){
+            location.reload();
+        }, 5000)
+    </script>
 </body>
 </html>
